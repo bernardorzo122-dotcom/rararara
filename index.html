@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="tl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff2d8">
+  <title>Iinom ba tayo mamaya? 🍻</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --rose: #e88a36;
+      --rose-dark: #a85a22;
+      --ink: #49372c;
+      --paper: #fff9ed;
+      --yes-scale: 1;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      color: var(--ink);
+      font-family: "DM Sans", sans-serif;
+      background:
+        radial-gradient(ellipse at 14% 18%, rgba(255, 255, 255, .9) 0 5%, transparent 34%),
+        radial-gradient(ellipse at 88% 82%, rgba(255, 198, 110, .56), transparent 38%),
+        linear-gradient(135deg, #ffedc9 0%, #fff5df 47%, #f8ddb2 100%);
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      min-height: 100svh;
+      place-items: center;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .invite {
+      width: min(100%, 560px);
+      padding: 24px 12px 32px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--rose-dark);
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: #8b501f;
+      font-family: "DM Sans", sans-serif;
+      font-size: clamp(2.7rem, 12vw, 5.2rem);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .question {
+      margin: 14px auto 0;
+      font-size: clamp(1rem, 4vw, 1.2rem);
+      line-height: 1.6;
+    }
+
+    .name { font-weight: 800; color: var(--rose-dark); }
+
+    .art {
+      display: grid;
+      width: 132px;
+      height: 132px;
+      margin: 26px auto 30px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .82);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .58);
+      box-shadow: 0 14px 38px rgba(130, 82, 31, .12);
+      font-size: 4.4rem;
+      animation: bob 3s ease-in-out infinite;
+    }
+
+    .buttons {
+      position: relative;
+      display: flex;
+      min-height: 64px;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    button {
+      min-height: 54px;
+      border: 0;
+      border-radius: 999px;
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .yes-button {
+      position: relative;
+      z-index: 5;
+      min-width: 126px;
+      padding: 15px 30px;
+      color: white;
+      background: linear-gradient(135deg, #f39a42, #dc6e32);
+      box-shadow: 0 8px 20px rgba(164, 91, 35, .25);
+      transform: scale(var(--yes-scale));
+      transform-origin: center;
+      transition: transform .2s ease, box-shadow .2s ease, border-radius .2s ease;
+    }
+
+    .yes-button:hover {
+      box-shadow: 0 12px 26px rgba(164, 91, 35, .34);
+    }
+
+    .yes-button.is-fullscreen {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      width: 100dvw;
+      height: 100vh;
+      height: 100dvh;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 24px;
+      border-radius: 0;
+      transform: none;
+      font-size: clamp(2rem, 8vw, 4rem);
+      box-shadow: none;
+    }
+
+    .no-button {
+      position: relative;
+      z-index: 6;
+      min-width: 126px;
+      padding: 15px 28px;
+      color: #fffdf6;
+      background: #315b4c;
+      box-shadow: 0 7px 18px rgba(41, 80, 64, .25);
+      transition: left .2s ease, top .2s ease, transform .2s ease;
+      white-space: nowrap;
+    }
+
+    .no-button.is-escaping { position: fixed; }
+
+    .plea-popup {
+      position: fixed;
+      z-index: 7;
+      max-width: calc(100vw - 32px);
+      padding: 12px 18px;
+      border: 1px solid rgba(255, 255, 255, .9);
+      border-radius: 999px;
+      color: #8b501f;
+      background: rgba(255, 255, 255, .96);
+      box-shadow: 0 8px 24px rgba(116, 42, 63, .16);
+      font-size: 1.25rem;
+      font-weight: 800;
+      pointer-events: none;
+      white-space: nowrap;
+      animation: plea-pop 1.7s ease-out forwards;
+    }
+
+    .success {
+      width: min(100%, 700px);
+      animation: arrive .6s cubic-bezier(.2, .8, .2, 1) both;
+    }
+
+    .success h1 { font-size: clamp(2.6rem, 11vw, 5rem); }
+
+    .success-message {
+      margin: 18px 0 0;
+      font-size: clamp(1rem, 4vw, 1.25rem);
+    }
+
+    .confetti-canvas {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .floating-cheer {
+      position: fixed;
+      z-index: 9;
+      bottom: -48px;
+      pointer-events: none;
+      animation: float-up var(--duration) ease-out forwards;
+      font-size: var(--size);
+      opacity: 0;
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0) rotate(-4deg); }
+      50% { transform: translateY(-9px) rotate(4deg); }
+    }
+
+    @keyframes arrive {
+      from { opacity: 0; transform: translateY(18px) scale(.94); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes plea-pop {
+      0% { opacity: 0; transform: scale(.72) translateY(10px); }
+      14%, 72% { opacity: 1; transform: scale(1) translateY(0); }
+      100% { opacity: 0; transform: scale(.94) translateY(-12px); }
+    }
+
+    @keyframes float-up {
+      0% { opacity: 0; transform: translateY(0) rotate(-12deg); }
+      12% { opacity: .95; }
+      100% { opacity: 0; transform: translateY(-115vh) rotate(24deg); }
+    }
+
+    @media (max-width: 420px) {
+      .invite { padding-inline: 2px; }
+      .art { width: 112px; height: 112px; font-size: 3.8rem; }
+      .buttons { gap: 12px; }
+      .yes-button, .no-button { min-width: 112px; padding-inline: 22px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" id="page">
+    <section class="invite" id="invite" aria-labelledby="title">
+      <p class="eyebrow">Rararara!</p>
+      <h1 id="title">Iinom ba tayo mamaya? 🍻</h1>
+      <!-- Palitan ang emoji na ito ng <img src="your-photo.gif" alt="Tropang nagkakasiyahan"> kung gusto mo ng sariling GIF o larawan. -->
+      <div class="art" aria-hidden="true">🍻</div>
+      <div class="buttons">
+        <button class="yes-button" id="yesButton" type="button">G!</button>
+        <button class="no-button" id="noButton" type="button">Pass muna</button>
+      </div>
+    </section>
+  </main>
+  <canvas class="confetti-canvas" id="confetti" aria-hidden="true"></canvas>
+
+  <script>
+    // Opsyonal: magdagdag ng tawag sa tropa, halimbawa: ", tropa".
+    const friendName = "";
+    // Idagdag o palitan ang mga pakiusap na lalabas sa bawat pag-iwas sa Pass muna.
+    const noMessages = [
+      "Sure ka, busseng? ",
+      "One bottle lang! 🍻",
+      "Rarararara",
+      "Tara na, minsan lang!",
+      "G na, busseng! "
+    ];
+    const successTitle = "G! Busseng";
+    const successMessage = "🍻";
+
+    const page = document.getElementById("page");
+    const invite = document.getElementById("invite");
+    const yesButton = document.getElementById("yesButton");
+    const noButton = document.getElementById("noButton");
+    const nameElement = document.getElementById("name");
+    const canvas = document.getElementById("confetti");
+    const context = canvas.getContext("2d");
+    let attempts = 0;
+    let lastAttemptAt = 0;
+    let celebrationStarted = false;
+    const activePleaPopups = new Set();
+
+    if (nameElement) nameElement.textContent = friendName;
+
+    function attemptNo(event) {
+      if (event) event.preventDefault();
+      if (celebrationStarted) return;
+
+      attempts += 1;
+      lastAttemptAt = Date.now();
+      showPleaPopup(noMessages[(attempts - 1) % noMessages.length]);
+      noButton.classList.add("is-escaping");
+
+      const maxLeft = Math.max(0, window.innerWidth - noButton.offsetWidth);
+      const maxTop = Math.max(0, window.innerHeight - noButton.offsetHeight);
+      noButton.style.left = `${Math.random() * maxLeft}px`;
+      noButton.style.top = `${Math.random() * maxTop}px`;
+
+      const scale = 1 + attempts * 0.24;
+      yesButton.style.setProperty("--yes-scale", scale);
+      const scaleToCover = Math.max(
+        window.innerWidth / yesButton.offsetWidth,
+        window.innerHeight / yesButton.offsetHeight
+      ) + 0.15;
+
+      if (scale >= scaleToCover) {
+        yesButton.classList.add("is-fullscreen");
+        noButton.style.zIndex = "0";
+      }
+    }
+
+    function showPleaPopup(message) {
+      const popup = document.createElement("div");
+      popup.className = "plea-popup";
+      popup.textContent = message;
+      popup.style.visibility = "hidden";
+
+      if (activePleaPopups.size >= 4) {
+        const oldestPopup = activePleaPopups.values().next().value;
+        oldestPopup.remove();
+        activePleaPopups.delete(oldestPopup);
+      }
+
+      document.body.appendChild(popup);
+      activePleaPopups.add(popup);
+      const margin = 16;
+      const maxLeft = Math.max(margin, window.innerWidth - popup.offsetWidth - margin);
+      const maxTop = Math.max(margin, window.innerHeight - popup.offsetHeight - margin);
+      popup.style.left = `${margin + Math.random() * (maxLeft - margin)}px`;
+      popup.style.top = `${margin + Math.random() * (maxTop - margin)}px`;
+      popup.style.visibility = "visible";
+      popup.addEventListener("animationend", () => {
+        popup.remove();
+        activePleaPopups.delete(popup);
+      }, { once: true });
+    }
+
+    noButton.addEventListener("mouseenter", attemptNo);
+    noButton.addEventListener("touchstart", attemptNo, { passive: false });
+    noButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (Date.now() - lastAttemptAt > 400) attemptNo(event);
+    });
+    noButton.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") attemptNo(event);
+    });
+
+    yesButton.addEventListener("click", celebrate);
+
+    function celebrate() {
+      if (celebrationStarted) return;
+      celebrationStarted = true;
+      noButton.hidden = true;
+      page.innerHTML = `
+        <section class="success" aria-live="polite">
+          <h1>${successTitle}</h1>
+          <p class="success-message">${successMessage}</p>
+          <div class="art" aria-hidden="true">🍻</div>
+        </section>
+      `;
+      startConfetti();
+      startFloatingHearts();
+    }
+
+    function resizeCanvas() {
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(window.innerWidth * pixelRatio);
+      canvas.height = Math.floor(window.innerHeight * pixelRatio);
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    }
+
+    function startConfetti() {
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      const colors = ["#e88732", "#ffc65e", "#ff8f5b", "#7ca66b", "#4d8b76", "#f7dc6f"];
+      const pieces = Array.from({ length: 150 }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: -Math.random() * window.innerHeight,
+        width: 5 + Math.random() * 7,
+        height: 8 + Math.random() * 9,
+        speed: 2 + Math.random() * 4,
+        drift: (Math.random() - 0.5) * 2.5,
+        rotation: Math.random() * Math.PI,
+        spin: (Math.random() - 0.5) * 0.14,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      }));
+      const startedAt = performance.now();
+
+      function draw(now) {
+        context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        for (const piece of pieces) {
+          piece.x += piece.drift;
+          piece.y += piece.speed;
+          piece.rotation += piece.spin;
+          context.save();
+          context.translate(piece.x, piece.y);
+          context.rotate(piece.rotation);
+          context.fillStyle = piece.color;
+          context.fillRect(-piece.width / 2, -piece.height / 2, piece.width, piece.height);
+          context.restore();
+        }
+
+        if (now - startedAt < 6500) {
+          requestAnimationFrame(draw);
+        } else {
+          context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          window.removeEventListener("resize", resizeCanvas);
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    function startFloatingHearts() {
+      const cheers = ["🍻", "🥳", "🎉", "🥨", "🍕"];
+      const timer = window.setInterval(() => {
+        const cheer = document.createElement("span");
+        cheer.className = "floating-cheer";
+        cheer.textContent = cheers[Math.floor(Math.random() * cheers.length)];
+        cheer.style.left = `${Math.random() * 100}vw`;
+        cheer.style.setProperty("--size", `${18 + Math.random() * 24}px`);
+        cheer.style.setProperty("--duration", `${4 + Math.random() * 3}s`);
+        document.body.appendChild(cheer);
+        cheer.addEventListener("animationend", () => cheer.remove(), { once: true });
+      }, 260);
+
+      window.setTimeout(() => window.clearInterval(timer), 7000);
+    }
+  </script>
+</body>
+</html>
